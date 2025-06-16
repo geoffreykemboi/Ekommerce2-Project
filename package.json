@@ -1,0 +1,27 @@
+{
+  "name": "project2",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Ekommerce APP?",
+  "main": "app.js",
+  "scripts": {
+    "start": "node backend/app.js",
+    "dev": "NODE_ENV=DEVELOPMENT nodemon backend/app.js",
+    "prod": "NODE_ENV=PRODUCTION nodemon backend/app.js",
+    "seeder": "node backend/seeder/seeder.js"
+  },
+  "author": "Geoffrey Kemboi",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.2",
+    "nodemailer": "^7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
