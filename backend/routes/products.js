@@ -7,12 +7,11 @@ import {
     getProductDetails, 
     getProducts, newProduct, 
     updateProduct, 
-} from '../controllers/productcontrollers.js';
+} from '../controllers/productControllers.js';
 import { authorizeRoles, isAuthenticatedUser } from '../middlewares/auth.js';
 const router = express.Router();
 
-
-router.route("/products").get(getProducts);  
+router.route("/").get(getProducts);  
 router
     .route("/admin/products")
     .post(isAuthenticatedUser, authorizeRoles("admin"), newProduct);
@@ -27,8 +26,11 @@ router
     .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct); // Assuming you want to update a product by ID in admin
 
 router
-    .route("/reviews")
+    .route("/products/:id")
     .get(isAuthenticatedUser, getProductDetails) // Assuming you want to get product reviews
+
+   router
+    .route("/reviews") 
     .put(isAuthenticatedUser,createProductReview); // Assuming you want to create a product review
 
 router

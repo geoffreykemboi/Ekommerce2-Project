@@ -1,6 +1,4 @@
-//create a model for product
 import mongoose from "mongoose";
-
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -12,7 +10,9 @@ const productSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: [true, "Please enter product price"],
-        maxLength: [5, "Product price cannot exceed 5 digits"],
+        // REFINEMENT: Use 'max' for numbers instead of 'maxLength'.
+        // This sets a maximum price value, e.g., 99999.
+        max: [99999, "Product price cannot exceed 5 digits"],
         default: 0.0,
     },
     description: {
@@ -55,14 +55,15 @@ const productSchema = new mongoose.Schema({
             message: "Please select valid category",
         },
     },
-        seller: {
+    seller: {
         type: String,
         required: [true, "Please enter product seller"],
     },
     stock: {
         type: Number,
         required: [true, "Please enter product stock"],
-        maxLength: [5, "Product stock cannot exceed 5 digits"],
+        // REFINEMENT: Use 'max' for numbers.
+        max: [99999, "Product stock cannot exceed 5 digits"],
         default: 1,
     },
     numOfReviews: {
@@ -74,6 +75,7 @@ const productSchema = new mongoose.Schema({
         user: {
             type: mongoose.Schema.ObjectId,
             ref: "User",
+            // REFINEMENT: A review should always be linked to a user.
             required: true,
         },
         name: {
@@ -90,11 +92,13 @@ const productSchema = new mongoose.Schema({
         },
         },
     ],
+    // This field tracks which user created the product.
     user: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        required: true, // Ensure that the user field is required
+        // REFINEMENT: It's good practice to require a product to have a creator.
+        required: true,
     },
     }, { timestamps: true });
 
-    export default mongoose.model("Product", productSchema);
+export default mongoose.model("Product", productSchema);
