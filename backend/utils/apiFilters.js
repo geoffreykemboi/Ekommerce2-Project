@@ -1,46 +1,47 @@
+// utils/apiFilters.js
 class APIFilters {
-  constructor(query, queryString) {
+  constructor(query, queryStr) {
     this.query = query;
-    this.queryString = queryString;
+    this.queryStr = queryStr;
   }
 
-search() {
-  const keywords = this.queryString.keyword
-    ? {
-        name: {
-          $regex: this.queryString.keyword, // Regular expression for keyword search & the use of regex does not require the keyword to be an exact match
-          // This allows for partial matches, so "phone" would match "smartphone", "phone case", etc.         
-          $options: "i", // Case-insensitive search  &  // The 'i' option makes the search case-insensitive
-        },
-      }
-    : {};
+  search() {
+    const keyword = this.queryStr.keyword
+      ? {
+          name: {
+            $regex: this.queryStr.keyword,
+            $options: "i",
+          },
+        }
+      : {};
 
-  this.query = this.query.find({ ...keywords });  // Apply the search criteria to the query
-  return this;                                    // Return the instance for method chaining
+    this.query = this.query.find({ ...keyword });
+    return this;
   }
 
-filters() {
-  const queryCopy = { ...this.queryString };
+  filter() {
+    const queryCopy = { ...this.queryStr };
 
-  // Fields to remove from query
-  const fieldsToRemove = ["keyword", "page", "limit"];
-  fieldsToRemove.forEach((el) => delete queryCopy[el]);
+    // Remove fields from query
+    const removeFields = ["keyword", "page", "limit"];
+    removeFields.forEach((el) => delete queryCopy[el]);
 
-  // Convert operators (gt, gte, lt, lte) into MongoDB format
-  let queryStr = JSON.stringify(queryCopy);
-  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`);
-  
-  this.query = this.query.find(JSON.parse(queryStr));
-  return this;
-}
+    // Advanced filter for price, ratings etc
+    let queryStr = JSON.stringify(queryCopy);
 
-  pagination(resPerPage = 10) {
-    const currentPage = Number(this.queryStr.page) || 1; // Get the current page from the query string or default to 1
-    // Stub implementation for pagination to avoid syntax errors
-    const skip = resPerPage * (currentPage - 1); // Calculate the number of documents to skip based on the current page and results per page
-    this.query = this.query.limit(resPerPage).skip(skip); // Apply pagination to the query
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
+
+    this.query = this.query.find(JSON.parse(queryStr));
+
+    return this;
+  }
+
+  pagination(resPerPage) {
+    const currentPage = Number(this.queryStr.page) || 1;
+    const skip = resPerPage * (currentPage - 1);
+
+    this.query = this.query.limit(resPerPage).skip(skip);
     return this;
   }
 }
-
 export default APIFilters;

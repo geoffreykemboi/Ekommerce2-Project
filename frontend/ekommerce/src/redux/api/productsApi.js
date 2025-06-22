@@ -3,13 +3,23 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const productApi = createApi({
     reducerPath: "productApi",
     baseQuery: fetchBaseQuery({ baseUrl: "/api/v1" }),
+    keepUnusedDataFor: 30,
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: () => "/products", // Fixed incorrect key 'url' to 'query'
+            query: (params) => ({
+                url: "/products",
+                params: { ...params },
+                keyword: { ...params},
+                category: { ...params},
+                "price[gte": params.min,
+                "price[lte]": params.max,
+                "ratings[gte]":params?.ratings,
+            }),
+        }),
+        getProductDetails: builder.query({
+            query: (id) => `/products/${id}`,
         }),
     }),
 });
 
-export const { useGetProductsQuery } = productApi;
-
-
+export const { useGetProductsQuery, useGetProductDetailsQuery } = productApi;

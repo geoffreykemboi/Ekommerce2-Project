@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Backend for Project 2",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+     "dev": "NODE_ENV=DEVELOPMENT nodemon backend/app.js",
+    "seeder": "node backend/seeder/seeder.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Geoffrey Kemboi",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.2",
