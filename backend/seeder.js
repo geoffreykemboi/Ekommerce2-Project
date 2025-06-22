@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 // FIX: Path must go up one level from 'seeder' to 'backend'
-import products from '../data.js';
-import Product from '../models/product.js';
+import products from './data.js';
+import Product from './models/product.js';
 
 // FIX: Path must go up one level to find the config directory
 dotenv.config({ path: '../config/config.env' });

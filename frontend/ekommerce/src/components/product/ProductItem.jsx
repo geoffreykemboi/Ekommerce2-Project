@@ -28,7 +28,7 @@ const ProductItem = ({ product }) => {
 
         <div className="card-body d-flex justify-content-center flex-column">
           <h5 className="card-title">
-            <Link to={`/product/${_id}`}>{name}</Link>
+            <Link to={`/product/${_id}`}>{product?.name}</Link>
           </h5>
 
           <div className="ratings mt-auto d-flex align-items-center">

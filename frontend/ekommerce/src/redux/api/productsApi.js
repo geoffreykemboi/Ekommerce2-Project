@@ -10,6 +10,10 @@ export const productApi = createApi({
                 url: "/products",
                 params: { ...params },
                 keyword: { ...params},
+                category: { ...params},
+                "price[gte": params.min,
+                "price[lte]": params.max,
+                "ratings[gte]":params?.ratings,
             }),
         }),
         getProductDetails: builder.query({
