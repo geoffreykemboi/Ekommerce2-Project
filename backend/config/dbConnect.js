@@ -1,28 +1,28 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-// Load environment variables from config/config.env
-dotenv.config({ path: './config/config.env' });
+// This will now automatically find the .env file in your backend directory
+dotenv.config();
 
 export const connectDatabase = async () => {
   const uri = process.env.MONGO_URI;
 
-  console.log("MongoDB URI from config/config.env:", uri); // 
+  console.log("Attempting to connect to MongoDB...");
+
+  if (!uri) {
+    console.error("MongoDB connection failed: MONGO_URI not found in your .env file.");
+    process.exit(1);
+  }
 
   try {
-    const conn = await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const conn = await mongoose.connect(uri);
 
-    console.log(`MongoDB connected: ${conn.connection.host}`);
+    console.log(`MongoDB connected successfully: ${conn.connection.host}`);
   } catch (error) {
-    console.error("MongoDB connection failed:", error.message);
+    console.error(`MongoDB connection error: ${error.message}`);
     process.exit(1);
   }
 };
-
-
 
 //import mongoose from "mongoose";
 

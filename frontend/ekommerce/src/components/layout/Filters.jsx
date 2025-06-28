@@ -56,7 +56,8 @@ const Filters = () => {
 
   const defaultCheckHandler = (checkboxType, CheckBoxValue) => {
     const value = searchParams.get(checkboxType);
-    if(CheckBoxValue = value) return true;
+    // ✅ FIX: Changed assignment (=) to comparison (===)
+    if(CheckBoxValue === value) return true;
     return false;
   };
   return (
@@ -123,12 +124,12 @@ const Filters = () => {
             className="form-check-input"
             type="checkbox"
             name="ratings"
-            id={`check${rating}`} // FIX: Use a unique ID for each checkbox
+            id={`check${rating}`}
             value={rating}
             defaultChecked={defaultCheckHandler("ratings", rating.toString())}
             onClick={(e) => handleClick(e.target)}
           />
-          <label className="form-check-label" htmlFor={`check${rating}`}> {/* FIX: Use unique htmlFor */}
+          <label className="form-check-label" htmlFor={`check${rating}`}>
             <StarRatings
               rating={rating}
               starRatedColor="#ffb829"

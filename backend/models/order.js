@@ -54,7 +54,8 @@ const orderSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Please select a payment method'],
             enum: {
-                values: ['Cash on Delivery', 'Online Payment'],
+                // ✅ FIX: Added "COD" to the list of allowed values to match the frontend.
+                values: ['Cash on Delivery', 'Online Payment', 'COD'],
                 message: 'Please select a valid payment method',
             },
         },

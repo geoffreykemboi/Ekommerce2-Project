@@ -27,7 +27,7 @@ body {
 }
 
 nav {
-  background-color: #232f3e;
+  background-color: #04476e;
   padding: 1rem 1rem;
 }
 
@@ -164,11 +164,11 @@ footer {
 }
 
 .redColor {
-  color: red;
+  color: red !important
 }
 
 .greenColor {
-  color: green;
+  color: green !important
 }
 
 #product_image {

@@ -1,43 +1,56 @@
+// backend/routes/products.js (The final version to fix all issues)
+
 import express from 'express';
-import { get } from 'mongoose';
 import { 
     createProductReview,
     deleteProduct, 
     deleteReview, 
     getProductDetails, 
-    getProducts, newProduct, 
+    getProducts, 
+    newProduct, 
     updateProduct, 
+    getAdminProducts,
+    uploadProductImages
 } from '../controllers/productControllers.js';
 import { authorizeRoles, isAuthenticatedUser } from '../middlewares/auth.js';
+
 const router = express.Router();
 
-router.route("/").get(getProducts);  
-router
-    .route("/admin/products")
-    .post(isAuthenticatedUser, authorizeRoles("admin"), newProduct);
+// Handles the HOMEPAGE (GET /api/v1/products)
+router.route("/products").get(getProducts);
 
-router.route("/products/:id").get(getProductDetails); // Assuming you want to get a single product by ID
+// Handles the PRODUCT DETAILS page (GET /api/v1/products/:id)
+router.route("/products/:id").get(getProductDetails);
+
+// It creates the path: POST /api/v1/admin/products
+router
+.route("/products")
+.post(isAuthenticatedUser, authorizeRoles("admin"), newProduct);
+
+// Handles GETting all products for the admin dashboard
+router
+.route("/admin/products")
+.get(isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts);
+
+// Handles UPDATING a product
+router
+.route("/products/:id")
+.put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct);
+
+// Handles DELETING a product
+router
+.route("/products/:id")
+.delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
 
 router
-    .route("/products/:id")
-    .put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct); // Assuming you want to update a product by ID    
-router
-    .route("/products/:id")
-    .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct); // Assuming you want to update a product by ID in admin
+.route("/products/:id/upload_images")
+.post(isAuthenticatedUser, authorizeRoles("admin"), uploadProductImages);
 
-router
-    .route("/products/:id")
-    .get(isAuthenticatedUser, getProductDetails) // Assuming you want to get product reviews
 
-   router
-    .route("/reviews") 
-    .put(isAuthenticatedUser,createProductReview); // Assuming you want to create a product review
-
-router
-    .route("/admin/reviews")
-    .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteReview); // Assuming you want to delete a product review by admin
+// --- REVIEW ROUTES ---
+router.route("/admin/products").get(isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts);
+router.route("/reviews").put(isAuthenticatedUser, createProductReview);
+router.route("/admin/reviews").delete(isAuthenticatedUser, authorizeRoles("admin"), deleteReview);
    
-
-
 export default router;
 
