@@ -87,6 +87,18 @@ export const updateOrder = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("You have already delivered this order", 400));
     }
 
+    let productNotFound = false;
+    for (const item of order.orderItems) {
+        const product = await Product.findById(item.product.toString());
+        if (!product) {
+            productNotFound = true;
+            break;
+        }
+        if (product.stock < item.quantity) {
+            return next(new ErrorHandler(`Insufficient stock for product ID: ${item.product}`, 400));
+        }
+    }   
+
     // Correctly update product stock
     for (const item of order.orderItems) {
         const product = await Product.findById(item.product.toString());

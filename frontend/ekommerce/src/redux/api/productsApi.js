@@ -57,6 +57,16 @@ export const productApi = createApi({
             }),
             invalidatesTags: ["Product"], 
         }),
+
+        deleteProductImage: builder.mutation({
+            query: ({ id, body }) => ({
+                url: `/admin/products/${id}/delete_image`, // Correct path, uses backticks ` and has closing brace }
+                method: "PUT", // Changed to POST for uploading images
+                body,
+            }),
+            invalidatesTags: ["Product"], 
+        }),
+
         deleteProduct: builder.mutation({
             query(id) {
               return {
@@ -77,4 +87,5 @@ export const {
     useCreateProductMutation,
     useUpdateProductMutation,
     useUploadProductImagesMutation,
+    useDeleteProductImageMutation,
 } = productApi;

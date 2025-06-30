@@ -10,7 +10,8 @@ import {
     newProduct, 
     updateProduct, 
     getAdminProducts,
-    uploadProductImages
+    uploadProductImages,
+    deleteProductImage
 } from '../controllers/productControllers.js';
 import { authorizeRoles, isAuthenticatedUser } from '../middlewares/auth.js';
 
@@ -43,8 +44,12 @@ router
 .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
 
 router
-.route("/products/:id/upload_images")
+.route("/admin/products/:id/upload_images")
 .post(isAuthenticatedUser, authorizeRoles("admin"), uploadProductImages);
+
+router
+.route("/admin/products/:id/delete_image")
+.put(isAuthenticatedUser, authorizeRoles("admin"), deleteProductImage);
 
 
 // --- REVIEW ROUTES ---

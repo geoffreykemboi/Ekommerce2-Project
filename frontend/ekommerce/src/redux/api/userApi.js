@@ -3,11 +3,11 @@ import { setUser, setIsAuthenticated } from "../../redux/features/userSlice";
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({ 
+  baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1",
     credentials: "include", // ✅ needed for cookies/sessions
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "AdminUser"],
   endpoints: (builder) => ({
     getMe: builder.query({
       query: () => `/me`,
@@ -36,13 +36,31 @@ export const userApi = createApi({
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setUser(data.user)); // ✅ make sure this matches your backend response
+          dispatch(setUser(data.user));
         } catch (error) {
           console.error("Update profile failed:", error);
         }
       },
     }),
+
+    getAdminUsers: builder.query({
+      query: () => `/admin/users`,
+      providesTags: ["AdminUser"],
+    }),
+
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/admin/user/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AdminUser"],
+    }),
   }),
 });
 
-export const { useGetMeQuery, useUpdateProfileMutation } = userApi;
+export const {
+  useGetMeQuery,
+  useUpdateProfileMutation,
+  useGetAdminUsersQuery,
+  useDeleteUserMutation,
+} = userApi;
