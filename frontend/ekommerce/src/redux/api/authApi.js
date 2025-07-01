@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { userApi } from './userApi';
 
 const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
 
@@ -16,12 +15,16 @@ export const authApi = createApi({
                     body,
                 };
             },
-            async onQueryStarted(args, { dispatch, queryFulfilled}) {
+            async onQueryStarted(args, { queryFulfilled }) {
                 try {
-                    await queryFulfilled;
-                    await dispatch(userApi.endpoints.getMe.initiate(null));
+                    const { data } = await queryFulfilled;
+                    if (data.token) {
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("user", JSON.stringify(data.user));
+                    }
                 } catch (error) {
-                    console.log(error);
+                    // eslint-disable-next-line no-console
+                    console.error("Register error:", error);
                 }
             }
         }),
@@ -33,12 +36,16 @@ export const authApi = createApi({
                     body,
                 };
             },
-            async onQueryStarted(args, { dispatch, queryFulfilled}) {
+            async onQueryStarted(args, { queryFulfilled }) {
                 try {
-                    await queryFulfilled;
-                    await dispatch(userApi.endpoints.getMe.initiate(null));
+                    const { data } = await queryFulfilled;
+                    if (data.token) {
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("user", JSON.stringify(data.user));
+                    }
                 } catch (error) {
-                    console.log(error);
+                    // eslint-disable-next-line no-console
+                    console.error("Login error:", error);
                 }
             }
         }),

@@ -8,7 +8,7 @@ const products = [
     images: [
       {
         public_id: "shopit/demo/nkkjkta63uiazppzkmjf",
-        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1698577488/shopit/demo/nkkjkta63uiazppzkmjf.jpg",
+        url: "https://res.cloudinary.com/udemy-courses/image/upload/v1698577488/shopit/demo/nkkjkta63uiazppzkmjf.jpg",
       },
     ],
     category: "Electronics",
@@ -26,7 +26,7 @@ const products = [
     images: [
       {
         public_id: "shopit/demo/e3hweb3tbp5zacfi564c",
-        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1698577509/shopit/demo/e3hweb3tbp5zacfi564c.jpg",
+        url: "https://res.cloudinary.com/udemy-courses/image/upload/v1698577509/shopit/demo/e3hweb3tbp5zacfi564c.jpg",
       },
     ],
     category: "Electronics",
@@ -44,7 +44,7 @@ const products = [
     images: [
       {
         public_id: "shopit/demo/g502-hero-mouse",
-        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1698577520/shopit/demo/g502-hero-mouse.jpg",
+        url: "https://res.cloudinary.com/udemy-courses/image/upload/v1698577520/shopit/demo/g502-hero-mouse.jpg",
       },
     ],
     category: "Electronics",
@@ -62,7 +62,7 @@ const products = [
     images: [
       {
         public_id: "shopit/demo/s21-ultra-5g",
-        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1698577532/shopit/demo/s21-ultra-5g.jpg",
+        url: "https://res.cloudinary.com/udemy-courses/image/upload/v1698577532/shopit/demo/s21-ultra-5g.jpg",
       },
     ],
     category: "Electronics",
