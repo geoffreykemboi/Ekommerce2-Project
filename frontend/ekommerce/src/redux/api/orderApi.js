@@ -1,9 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
+
+const baseQueryWithAuth = async (args, api, extraOptions) => {
+  const token = localStorage.getItem("token");
+  let request = typeof args === "string" ? { url: args } : { ...args };
+  request.headers = {
+    ...(request.headers || {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+  const rawBaseQuery = fetchBaseQuery({ baseUrl });
+  return rawBaseQuery(request, api, extraOptions);
+};
+
 export const orderApi = createApi({
   reducerPath: "orderApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1" }),
-  tagTypes: ["Order", "AdminOrders"], // ✅ add this
+  baseQuery: baseQueryWithAuth,
+  tagTypes: ["Order", "AdminOrders"],
   endpoints: (builder) => ({
     createNewOrder: builder.mutation({
       query: (orderData) => ({
@@ -23,7 +36,7 @@ export const orderApi = createApi({
 
     orderDetails: builder.query({
       query: (id) => `/orders/${id}`,
-      providesTags: (result, error, id) => [{ type: "Order", id }], // ✅ provides tag
+      providesTags: (result, error, id) => [{ type: "Order", id }],
     }),
 
     updateOrder: builder.mutation({
@@ -34,7 +47,7 @@ export const orderApi = createApi({
           body,
         };
       },
-      invalidatesTags: (result, error, { id }) => [{ type: "Order", id }], // ✅ invalidates tag
+      invalidatesTags: (result, error, { id }) => [{ type: "Order", id }],
     }),
 
     deleteOrder: builder.mutation({
@@ -44,7 +57,7 @@ export const orderApi = createApi({
           method: "DELETE",
         };
       },
-      invalidatesTags: ["AdminOrders"], // ✅ invalidates tag
+      invalidatesTags: ["AdminOrders"],
     }),
 
     getDashboardSales: builder.query({
@@ -54,7 +67,7 @@ export const orderApi = createApi({
 
     getAdminOrders: builder.query({
       query: () => `/admin/orders`,
-      providesTags: ['AdminOrders'], // ✅ fixed typo
+      providesTags: ['AdminOrders'],
     }),
   }),
 });

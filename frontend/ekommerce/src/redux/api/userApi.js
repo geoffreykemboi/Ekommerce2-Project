@@ -30,7 +30,7 @@ export const userApi = createApi({
           dispatch(setIsAuthenticated(true));
         } catch (error) {
           toast.error(
-            `Failed to fetch user (/me): ${error?.error || error?.data?.message || error?.status || "Unknown error"}`
+            `Failed to fetch user (/me): ${error?.error || error?.data?.message || error?.status || JSON.stringify(error)}`
           );
           // eslint-disable-next-line no-console
           console.error("/me error:", error);
