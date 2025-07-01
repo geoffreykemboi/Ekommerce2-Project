@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { setUser, setIsAuthenticated } from "../features/userSlice";
 
 const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
 
@@ -49,10 +50,21 @@ export const authApi = createApi({
                 }
             }
         }),
-        logout: builder.query({
-            query: () => "/logout",
+        logout: builder.mutation({
+            query: () => ({
+                url: "/logout",
+                method: "GET",
+            }),
+            async onQueryStarted(args, { dispatch }) {
+                // Remove JWT and user from localStorage
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                // Reset Redux state
+                dispatch(setUser(null));
+                dispatch(setIsAuthenticated(false));
+            }
         })
     }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLazyLogoutQuery } = authApi;
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation } = authApi;
