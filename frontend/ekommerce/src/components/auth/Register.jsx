@@ -20,18 +20,22 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  // ✅ FIX: Removed unused 'data' from the destructuring.
-  const [register, { isLoading, error }] = useRegisterMutation();
+  // Add local state for registration success
+  const [register, { isLoading, error, isSuccess }] = useRegisterMutation();
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    if (isSuccess) {
+      toast.success("Registration successful! Please login.");
+      setTimeout(() => navigate("/login"), 1500);
+    }
     if (isAuthenticated) {
       navigate("/");
     }
     if (error) {
       toast.error(error?.data?.message || "Registration failed.");
     }
-  }, [error, isAuthenticated, navigate]);
+  }, [error, isAuthenticated, isSuccess, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
