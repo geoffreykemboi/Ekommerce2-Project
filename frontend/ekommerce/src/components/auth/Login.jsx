@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLoginMutation } from '../../redux/api/authApi';
+import { useLoginMutation, useLogoutMutation } from '../../redux/api/authApi';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';

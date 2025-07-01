@@ -3,7 +3,7 @@ import Search from "./Search";
 import { useGetMeQuery } from "../../redux/api/userApi";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useLazyLogoutQuery } from "../../redux/api/authApi";
+import { useLogoutMutation } from '../../redux/api/authApi';
 
 
 const Header = () => {
@@ -15,7 +15,7 @@ const Header = () => {
     const { user } = useSelector ((state) => state.auth);
     const { cartItems } = useSelector ((state) => state.cart)
 
-    const [triggerLogout] = useLazyLogoutQuery();
+    const [triggerLogout] = useLogoutMutation();
 
 const logoutHandler = async () => {
     try {
