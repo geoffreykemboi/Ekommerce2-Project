@@ -8,6 +8,8 @@ export default (user, statusCode, res) => {
             Date.now() + process.env.COOKIE_EXPIRES_TIME * 24 * 60 * 60 * 1000 // Convert days to milliseconds
         ),
         httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+        sameSite: "none", // Required for cross-site cookies
+        secure: true      // Required for cross-site cookies (HTTPS)
     };
 
     console.log(options); // Log the generated token for debugging
