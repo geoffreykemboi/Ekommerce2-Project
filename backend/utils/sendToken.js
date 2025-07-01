@@ -9,7 +9,8 @@ export default (user, statusCode, res) => {
         ),
         httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
         sameSite: "none", // Required for cross-site cookies
-        secure: true      // Required for cross-site cookies (HTTPS)
+        secure: true,      // Required for cross-site cookies (HTTPS)
+        domain: ".onrender.com" // Ensures cookie is set for the correct domain
     };
 
     console.log(options); // Log the generated token for debugging
