@@ -17,13 +17,28 @@ export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Login first to access this resource", 401));
     }
     
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
-    if (!user) {
-        return next(new ErrorHandler("Authentication failed, user not found.", 401));
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return next(new ErrorHandler("Authentication failed, user not found.", 401));
+        }
+        req.user = user;
+        next();
+    } catch (error) {
+        // Handle JWT errors more gracefully
+        console.error("Error in controller:", error);
+        
+        if (error.name === "JsonWebTokenError") {
+            return next(new ErrorHandler("JSON Web Token is invalid. Try again", 401));
+        }
+        if (error.name === "TokenExpiredError") {
+            return next(new ErrorHandler("JSON Web Token has expired. Try again", 401));
+        }
+        
+        // For any other JWT-related errors
+        return next(new ErrorHandler("Authentication failed. Please login again.", 401));
     }
-    req.user = user;
-    next();
 });
 
 // Authorize user roles

@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser, setIsAuthenticated } from "../features/userSlice";
+import { API_URL } from "../../config/api";
+import { setAuthData, clearAuthData } from "../../utils/auth";
 
-const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
+const baseUrl = API_URL;
 
 
 export const authApi = createApi({
@@ -16,12 +18,15 @@ export const authApi = createApi({
                     body,
                 };
             },
-            async onQueryStarted(args, { queryFulfilled }) {
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    if (data.token) {
-                        localStorage.setItem("token", data.token);
-                        localStorage.setItem("user", JSON.stringify(data.user));
+                    if (data.token && data.user) {
+                        setAuthData(data.token, data.user);
+                        
+                        // Update Redux state
+                        dispatch(setUser(data.user));
+                        dispatch(setIsAuthenticated(true));
                     }
                 } catch (error) {
                     // eslint-disable-next-line no-console
@@ -37,12 +42,15 @@ export const authApi = createApi({
                     body,
                 };
             },
-            async onQueryStarted(args, { queryFulfilled }) {
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    if (data.token) {
-                        localStorage.setItem("token", data.token);
-                        localStorage.setItem("user", JSON.stringify(data.user));
+                    if (data.token && data.user) {
+                        setAuthData(data.token, data.user);
+                        
+                        // Update Redux state
+                        dispatch(setUser(data.user));
+                        dispatch(setIsAuthenticated(true));
                     }
                 } catch (error) {
                     // eslint-disable-next-line no-console
@@ -56,9 +64,9 @@ export const authApi = createApi({
                 method: "GET",
             }),
             async onQueryStarted(args, { dispatch }) {
-                // Remove JWT and user from localStorage
-                localStorage.removeItem("token");
-                localStorage.removeItem("user");
+                // Clear authentication data
+                clearAuthData();
+                
                 // Reset Redux state
                 dispatch(setUser(null));
                 dispatch(setIsAuthenticated(false));

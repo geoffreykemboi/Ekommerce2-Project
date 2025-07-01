@@ -1,8 +1,9 @@
 // frontend/src/slices/productApi.js (Final Corrected Version)
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_URL } from "../../config/api";
 
-const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
+const baseUrl = API_URL;
 
 export const productApi = createApi({
     reducerPath: "productApi",

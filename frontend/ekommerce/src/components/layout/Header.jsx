@@ -10,7 +10,11 @@ const Header = () => {
 
     const navigate = useNavigate()
 
-    const { isLoading} = useGetMeQuery()
+    // Only fetch user data if there's a token in localStorage
+    const token = localStorage.getItem("token");
+    const { isLoading} = useGetMeQuery(undefined, {
+        skip: !token // Skip the query if no token is present
+    });
 
     const { user } = useSelector ((state) => state.auth);
     const { cartItems } = useSelector ((state) => state.cart)

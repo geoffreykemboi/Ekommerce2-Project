@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "NODE_ENV=DEVELOPMENT nodemon backend/app.js",
-    "seeder": "node backend/seeder/seeder.js"
+    "dev": "cross-env NODE_ENV=DEVELOPMENT nodemon app.js",
+    "seeder": "node seeder.js"
   },
   "keywords": [],
   "author": "Geoffrey Kemboi",
@@ -25,6 +25,7 @@
     "nodemailer": "^7.0.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.0.2"
   }
 }

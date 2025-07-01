@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser, setIsAuthenticated } from "../../redux/features/userSlice";
 import { toast } from "react-hot-toast";
+import { API_URL } from "../../config/api";
 
-const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
+const baseUrl = API_URL;
 
 const baseQueryWithAuth = async (args, api, extraOptions) => {
   const token = localStorage.getItem("token");
@@ -29,9 +30,28 @@ export const userApi = createApi({
           dispatch(setUser(data));
           dispatch(setIsAuthenticated(true));
         } catch (error) {
-          toast.error(
-            `Failed to fetch user (/me): ${error?.error || error?.data?.message || error?.status || JSON.stringify(error)}`
-          );
+          // Handle JWT token errors by clearing auth data
+          const status = error?.error?.status;
+          const message = error?.error?.data?.message || error?.data?.message;
+          
+          if (status === 401 || message?.includes("JSON Web Token")) {
+            // Clear invalid tokens from localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            
+            // Clear Redux state
+            dispatch(setUser(null));
+            dispatch(setIsAuthenticated(false));
+            
+            // Only show error if it's not just "not logged in"
+            if (message && !message.includes("Login first")) {
+              toast.error(`Authentication error: ${message}`);
+            }
+          } else if (status !== 401 && status !== "FETCH_ERROR") {
+            // Show other non-auth errors
+            toast.error(`Failed to fetch user data: ${message || "Unknown error"}`);
+          }
+          
           // eslint-disable-next-line no-console
           console.error("/me error:", error);
         }

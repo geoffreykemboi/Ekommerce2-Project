@@ -4,8 +4,12 @@ import Footer from "./components/layout/Footer";
 import { Toaster } from 'react-hot-toast';
 import useUserRoutes from './components/routes/userRoutes';
 import useAdminRoutes from './components/routes/adminRoutes';
+import useAuthInit from './hooks/useAuthInit';
 
 function App() {
+
+  // Initialize authentication state from localStorage
+  useAuthInit();
 
   const userRoutes = useUserRoutes();
   const adminRoutes = useAdminRoutes();
