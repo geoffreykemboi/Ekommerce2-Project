@@ -6,16 +6,13 @@ const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
 
 const baseQueryWithAuth = async (args, api, extraOptions) => {
   const token = localStorage.getItem("token");
-  let headers = {};
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-  if (typeof args === "string") {
-    args = { url: args };
-  }
-  args.headers = { ...args.headers, ...headers };
+  let request = typeof args === "string" ? { url: args } : { ...args };
+  request.headers = {
+    ...(request.headers || {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
   const rawBaseQuery = fetchBaseQuery({ baseUrl });
-  return rawBaseQuery(args, api, extraOptions);
+  return rawBaseQuery(request, api, extraOptions);
 };
 
 export const userApi = createApi({
