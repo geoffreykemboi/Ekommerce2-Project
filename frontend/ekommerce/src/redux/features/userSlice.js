@@ -8,7 +8,7 @@ const initialState = {
 
 export const userSlice = createSlice({
     initialState,
-    name: "useSlice",
+    name: "auth", // Changed from 'useSlice' to 'auth'
     reducers:{
         setUser(state, action) {
             state.user = action.payload;
