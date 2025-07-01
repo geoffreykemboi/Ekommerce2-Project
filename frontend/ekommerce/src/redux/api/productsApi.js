@@ -2,9 +2,11 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
+
 export const productApi = createApi({
     reducerPath: "productApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "/api/v1" }),
+    baseQuery: fetchBaseQuery({ baseUrl }),
     tagTypes: ["Product", "AdminProducts"], // Added 'Product' tag for consistency
 
     endpoints: (builder) => ({

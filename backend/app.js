@@ -3,9 +3,14 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
+
+// Fix __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // 1. CONFIGURE DOTENV FIRST!
 // This simple version automatically finds the .env file in the current directory.
@@ -32,7 +37,16 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://ekommerce2-project.vercel.app"
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 // API routes
 app.use('/api/v1', authRoutes);
@@ -44,12 +58,14 @@ connectDatabase();
 
 // Production deployment logic
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, '/frontend/build')));
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
   });
 }
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Error handling middleware
 app.use(errorMiddleware);
