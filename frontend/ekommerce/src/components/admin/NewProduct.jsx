@@ -86,7 +86,7 @@ const NewProduct = () => {
             <div className="row">
               <div className="mb-3 col">
                 <label htmlFor="price_field" className="form-label">
-                  Price
+                  Price (KSH)
                 </label>
                 <input
                   type="text"

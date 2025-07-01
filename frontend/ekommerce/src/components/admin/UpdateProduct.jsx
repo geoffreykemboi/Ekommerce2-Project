@@ -90,7 +90,7 @@ const UpdateProduct = () => {
 
             <div className="row">
               <div className="mb-3 col">
-                <label htmlFor="price_field" className="form-label">Price</label>
+                <label htmlFor="price_field" className="form-label">Price (KSH)</label>
                 <input type="text" id="price_field" className="form-control" name="price" value={product.price} onChange={onChange} />
               </div>
 

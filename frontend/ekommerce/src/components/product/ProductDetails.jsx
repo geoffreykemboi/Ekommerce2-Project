@@ -6,6 +6,7 @@ import Loader from "../layout/Loader";
 import StarRatings from "react-star-ratings";
 import { useDispatch } from 'react-redux';
 import { setCartItem } from '../../redux/features/cartSlice';
+import { formatPrice } from "../../helpers/helpers";
 
 const ProductDetails = () => {
     const params = useParams();
@@ -116,7 +117,7 @@ const ProductDetails = () => {
                 </div>
                 <hr />
 
-                <p id="product_price">${product?.price?.toFixed(2)}</p>
+                <p id="product_price">{formatPrice(product?.price)}</p>
                 <div className="stockCounter d-inline">
                     <span className="btn btn-danger minus" onClick={decreaseQty}>-</span>
                     <input

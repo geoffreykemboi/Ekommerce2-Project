@@ -4,6 +4,7 @@ import { useGetMeQuery } from "../../redux/api/userApi";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutMutation } from '../../redux/api/authApi';
+import { toast } from "react-hot-toast";
 
 
 const Header = () => {
@@ -23,9 +24,13 @@ const Header = () => {
 
 const logoutHandler = async () => {
     try {
+        toast.loading("Signing you out...", { id: "logout-loading" });
         await triggerLogout(); // Triggers the logout query
+        toast.dismiss("logout-loading");
         navigate(0); // Refresh the page
     } catch (err) {
+        toast.dismiss("logout-loading");
+        toast.error("Logout failed. Please try again.");
         console.error("Logout failed", err);
     }
 }

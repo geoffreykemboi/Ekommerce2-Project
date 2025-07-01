@@ -7,6 +7,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import MetaData from "../layout/MetaData";
 import { clearCart } from "../../redux/features/cartSlice";
 import { useDispatch } from "react-redux";
+import { formatPrice } from "../../helpers/helpers";
 
 const MyOrders = () => {
     const { data, isLoading, error } = useMyOrdersQuery();
@@ -62,7 +63,7 @@ const MyOrders = () => {
         data?.orders?.forEach((order) => {
             tableData.rows.push({
                 id: order?._id,
-                amount: `KES ${order?.totalAmount?.toFixed(2)}`,
+                amount: formatPrice(order?.totalAmount),
                 paymentStatus: (
                     <p style={{ color: String(order?.paymentInfo?.status).includes("Paid") ? "green" : "red" }}>
                         <b>{order?.paymentInfo?.status}</b>

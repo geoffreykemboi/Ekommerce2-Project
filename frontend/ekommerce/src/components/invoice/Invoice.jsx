@@ -91,44 +91,44 @@ const Invoice = () => {
                 <tr>
                   <td className="service">1</td>
                   <td className="desc">Product 1</td>
-                  <td className="unit">$499.99</td>
+                  <td className="unit">KSH 72,000.00</td>
                   <td className="qty">3</td>
-                  <td className="total">$1499.97</td>
+                  <td className="total">KSH 216,000.00</td>
                 </tr>
                 <tr>
                   <td className="service">2</td>
                   <td className="desc">Product 2</td>
-                  <td className="unit">$399.99</td>
+                  <td className="unit">KSH 58,000.00</td>
                   <td className="qty">2</td>
-                  <td className="total">$799.98</td>
+                  <td className="total">KSH 116,000.00</td>
                 </tr>
 
                 <tr>
                   <td colSpan="4">
                     <b>SUBTOTAL</b>
                   </td>
-                  <td className="total">$2299.95</td>
+                  <td className="total">KSH 332,000.00</td>
                 </tr>
 
                 <tr>
                   <td colSpan="4">
-                    <b>TAX 15%</b>
+                    <b>VAT 16%</b>
                   </td>
-                  <td className="total">$344.99</td>
+                  <td className="total">KSH 53,120.00</td>
                 </tr>
 
                 <tr>
                   <td colSpan="4">
                     <b>SHIPPING</b>
                   </td>
-                  <td className="total">$10.00</td>
+                  <td className="total">KSH 500.00</td>
                 </tr>
 
                 <tr>
                   <td colSpan="4" className="grand total">
                     <b>GRAND TOTAL</b>
                   </td>
-                  <td className="grand total">$2654.94</td>
+                  <td className="grand total">KSH 385,620.00</td>
                 </tr>
               </tbody>
             </table>

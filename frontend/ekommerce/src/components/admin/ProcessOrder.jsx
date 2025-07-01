@@ -5,6 +5,7 @@ import AdminLayout from "../layout/AdminLayout";
 import Loader from "../layout/Loader";
 import { useOrderDetailsQuery, useUpdateOrderMutation } from "../../redux/api/orderApi";
 import { toast } from "react-hot-toast";
+import { formatPrice } from "../../helpers/helpers";
 
 const ProcessOrder = () => {
   const [status, setStatus] = useState("");
@@ -159,7 +160,7 @@ const ProcessOrder = () => {
                   <Link to={`/product/${item.product}`}>{item.name}</Link>
                 </div>
                 <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                  <p>${item.price?.toFixed(2)}</p>
+                  <p>{formatPrice(item.price)}</p>
                 </div>
                 <div className="col-4 col-lg-3 mt-4 mt-lg-0">
                   <p>{item.quantity} Piece(s)</p>

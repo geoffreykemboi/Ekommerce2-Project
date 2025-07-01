@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser, setIsAuthenticated } from "../features/userSlice";
 import { API_URL } from "../../config/api";
 import { setAuthData, clearAuthData } from "../../utils/auth";
+import { toast } from "react-hot-toast";
 
 const baseUrl = API_URL;
 
@@ -27,9 +28,12 @@ export const authApi = createApi({
                         // Update Redux state
                         dispatch(setUser(data.user));
                         dispatch(setIsAuthenticated(true));
+                        
+                        // Success message
+                        toast.success(`Welcome ${data.user.name}! Registration successful.`);
                     }
                 } catch (error) {
-                    // eslint-disable-next-line no-console
+                    // Error message will be handled by the component
                     console.error("Register error:", error);
                 }
             }
@@ -51,9 +55,12 @@ export const authApi = createApi({
                         // Update Redux state
                         dispatch(setUser(data.user));
                         dispatch(setIsAuthenticated(true));
+                        
+                        // Success message
+                        toast.success(`Welcome back, ${data.user.name}! Login successful.`);
                     }
                 } catch (error) {
-                    // eslint-disable-next-line no-console
+                    // Error message will be handled by the component
                     console.error("Login error:", error);
                 }
             }
@@ -63,13 +70,28 @@ export const authApi = createApi({
                 url: "/logout",
                 method: "GET",
             }),
-            async onQueryStarted(args, { dispatch }) {
-                // Clear authentication data
-                clearAuthData();
-                
-                // Reset Redux state
-                dispatch(setUser(null));
-                dispatch(setIsAuthenticated(false));
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    
+                    // Clear authentication data
+                    clearAuthData();
+                    
+                    // Reset Redux state
+                    dispatch(setUser(null));
+                    dispatch(setIsAuthenticated(false));
+                    
+                    // Success message
+                    toast.success("You have been logged out successfully. See you next time!");
+                } catch (error) {
+                    // Even if the server request fails, clear local data
+                    clearAuthData();
+                    dispatch(setUser(null));
+                    dispatch(setIsAuthenticated(false));
+                    
+                    toast.success("You have been logged out successfully.");
+                    console.error("Logout error:", error);
+                }
             }
         })
     }),

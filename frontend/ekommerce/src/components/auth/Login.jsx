@@ -15,9 +15,11 @@ const Login = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
+            toast.dismiss("login-loading"); // Dismiss loading message
             navigate('/');
         }
         if (error) {
+            toast.dismiss("login-loading"); // Dismiss loading message
             // Show detailed error for debugging
             let message = error?.data?.message || 'Login failed.';
             if (error?.status) message += ` (Status: ${error.status})`;
@@ -31,6 +33,12 @@ const Login = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         const loginData = { email, password };
+        
+        // Show loading message
+        if (!isLoading) {
+            toast.loading("Signing you in...", { id: "login-loading" });
+        }
+        
         login(loginData);
     };
 

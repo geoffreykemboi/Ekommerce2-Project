@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import { useOrderDetailsQuery } from "../../redux/api/orderApi"; 
 import Loader from "../layout/Loader";
 import toast from "react-hot-toast";
+import { formatPrice } from "../../helpers/helpers";
 
 const OrderDetails = () => {
     const params = useParams();
@@ -109,7 +110,7 @@ const OrderDetails = () => {
             <tr>
               <th scope="row">Amount Paid</th>
               {/* Use dynamic total amount */}
-              <td>${totalAmount?.toFixed(2)}</td>
+              <td>{formatPrice(totalAmount)}</td>
             </tr>
           </tbody>
         </table>
@@ -135,7 +136,7 @@ const OrderDetails = () => {
                 </div>
     
                 <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                  <p>${item?.price.toFixed(2)}</p>
+                  <p>{formatPrice(item?.price)}</p>
                 </div>
     
                 <div className="col-4 col-lg-3 mt-4 mt-lg-0">

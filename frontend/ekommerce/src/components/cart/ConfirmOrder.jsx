@@ -3,6 +3,7 @@ import MetaData from "../layout/MetaData";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckoutSteps from "./CheckoutSteps";
+import { formatPrice } from "../../helpers/helpers";
 
 const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
@@ -13,8 +14,8 @@ const ConfirmOrder = () => {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  const shipping = subtotal > 1000 ? 0 : 100; // Free shipping if subtotal > 1000 KES
-  const tax = Number((0.1 * subtotal).toFixed(2)); // 10% tax
+  const shipping = subtotal > 20000 ? 0 : 500; // Free shipping if subtotal > KSH 20,000, otherwise KSH 500
+  const tax = Number((0.16 * subtotal).toFixed(2)); // 16% VAT (Kenya's standard VAT rate)
   const total = subtotal + shipping + tax;
 
   return (
@@ -53,8 +54,8 @@ const ConfirmOrder = () => {
 
                 <div className="col-4 col-lg-4 mt-4 mt-lg-0">
                   <p>
-                    {item?.quantity} x KES {item?.price} ={" "}
-                    <b>KES {(item?.quantity * item?.price).toFixed(2)}</b>
+                    {item?.quantity} x {formatPrice(item?.price)} ={" "}
+                    <b>{formatPrice(item?.quantity * item?.price)}</b>
                   </p>
                 </div>
               </div>
@@ -70,26 +71,26 @@ const ConfirmOrder = () => {
             <p>
               Subtotal:{" "}
               <span className="order-summary-values">
-                KES {subtotal.toFixed(0)}
+                {formatPrice(subtotal)}
               </span>
             </p>
             <p>
               Shipping:{" "}
               <span className="order-summary-values">
-                KES {shipping.toFixed(0)}
+                {formatPrice(shipping)}
               </span>
             </p>
             <p>
               Tax:{" "}
               <span className="order-summary-values">
-                KES {tax.toFixed(0)}
+                {formatPrice(tax)}
               </span>
             </p>
             <hr />
             <p>
               Total:{" "}
               <span className="order-summary-values">
-                KES {total.toFixed(0)}
+                {formatPrice(total)}
               </span>
             </p>
             <hr />

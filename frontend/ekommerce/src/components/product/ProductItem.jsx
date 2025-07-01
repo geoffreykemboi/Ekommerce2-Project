@@ -3,6 +3,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import StarRatings from "react-star-ratings";
+import { formatPrice } from "../../helpers/helpers";
 
 const ProductItem = ({ product }) => {
   if (!product) return null;
@@ -45,7 +46,7 @@ const ProductItem = ({ product }) => {
             </span>
           </div>
 
-          <p className="card-text mt-2 fw-bold">${price?.toFixed(2) || "N/A"}</p>
+          <p className="card-text mt-2 fw-bold">{formatPrice(price)}</p>
 
           <Link
             to={`/product/${_id}`}

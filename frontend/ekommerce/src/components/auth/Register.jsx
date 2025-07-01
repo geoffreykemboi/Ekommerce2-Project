@@ -25,20 +25,26 @@ const Register = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success("Registration successful! Please login.");
-      setTimeout(() => navigate("/login"), 1500);
-    }
     if (isAuthenticated) {
+      toast.dismiss("register-loading"); // Dismiss loading message
       navigate("/");
     }
     if (error) {
-      toast.error(error?.data?.message || "Registration failed.");
+      toast.dismiss("register-loading"); // Dismiss loading message
+      // Show detailed error message
+      const message = error?.data?.message || "Registration failed. Please try again.";
+      toast.error(message);
+      console.error("Registration error:", error);
     }
-  }, [error, isAuthenticated, isSuccess, navigate]);
+  }, [error, isAuthenticated, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    // Show loading message
+    if (!isLoading) {
+      toast.loading("Creating your account...", { id: "register-loading" });
+    }
 
     // ✅ FIX: Use FormData to send both user details and the avatar file.
     const formData = new FormData();

@@ -18,8 +18,8 @@ export const calculateOrderCost = (cartItems) => {
     0
   );
 
-  const shippingPrice = itemsPrice > 200 ? 0 : 25;
-  const taxPrice = (0.15 * itemsPrice).toFixed(2);
+  const shippingPrice = itemsPrice > 20000 ? 0 : 500; // Free shipping over KSH 20,000, otherwise KSH 500
+  const taxPrice = (0.16 * itemsPrice).toFixed(2); // 16% VAT (Kenya's standard VAT rate)
   const totalPrice = (itemsPrice + shippingPrice + parseFloat(taxPrice)).toFixed(2);
 
   return {
@@ -28,4 +28,10 @@ export const calculateOrderCost = (cartItems) => {
     taxPrice,
     totalPrice,
   };
+};
+
+export const formatPrice = (price) => {
+  if (price == null || isNaN(price)) return "KSH 0.00";
+  // Add thousand separators for better readability
+  return `KSH ${Number(price).toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
