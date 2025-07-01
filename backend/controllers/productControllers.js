@@ -11,6 +11,8 @@ export const getProducts = catchAsyncErrors(async (req, res, next) => {
   const resPerPage = 4;
   const productsCount = await Product.countDocuments();
 
+  console.log("Request query parameters:", req.query); // Debug log
+
   const apiFilters = new APIFilters(Product.find(), req.query);
 
   apiFilters.search();
@@ -18,6 +20,8 @@ export const getProducts = catchAsyncErrors(async (req, res, next) => {
 
   let products = await apiFilters.query;
   const filteredProductsCount = products.length;
+
+  console.log("Filtered products count:", filteredProductsCount); // Debug log
 
   apiFilters.pagination(resPerPage);
   
