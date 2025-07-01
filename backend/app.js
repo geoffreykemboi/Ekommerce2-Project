@@ -1,5 +1,10 @@
 // backend/app.js (The Final Correct Version)
 
+// Set NODE_ENV to production if not set (for render deployment)
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'PRODUCTION';
+}
+
 import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';

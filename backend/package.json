@@ -2,14 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend for Project 2",
-  "main": "app.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "cross-env NODE_ENV=DEVELOPMENT nodemon app.js",
+    "start": "node server.js",
+    "dev": "node server.js",
+    "local": "cross-env NODE_ENV=DEVELOPMENT nodemon app.js",
     "seeder": "node seeder.js",
-    "build": "echo 'No build step required for Node.js backend'",
-    "prod": "NODE_ENV=PRODUCTION node app.js"
+    "build": "npm install"
   },
   "keywords": [],
   "author": "Geoffrey Kemboi",
@@ -19,6 +19,7 @@
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -27,7 +28,6 @@
     "nodemailer": "^7.0.3"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "nodemon": "^3.0.2"
   }
 }
