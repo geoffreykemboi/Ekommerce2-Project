@@ -57,6 +57,16 @@ app.use(cors({
   allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization"
 }));
 
+// Health check endpoint for deployment
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Server is running properly',
+    environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // API routes
 app.use('/api/v1', authRoutes);
 app.use('/api/v1', productRoutes);

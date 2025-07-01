@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node app.js",
     "dev": "cross-env NODE_ENV=DEVELOPMENT nodemon app.js",
-    "seeder": "node seeder.js"
+    "seeder": "node seeder.js",
+    "build": "echo 'No build step required for Node.js backend'",
+    "prod": "NODE_ENV=PRODUCTION node app.js"
   },
   "keywords": [],
   "author": "Geoffrey Kemboi",
