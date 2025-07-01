@@ -42,13 +42,6 @@ app.use('/api/v1', orderRoutes);
 // Connect to the database
 connectDatabase();
 
-// MongoDB connection
-const uri = 'mongodb+srv://geoffreykemboi:Kipchumba%4022@cluster0.wpp53sj.mongodb.net/ekommerce?retryWrites=true&w=majority&appName=Cluster0';
-
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
 // Production deployment logic
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();

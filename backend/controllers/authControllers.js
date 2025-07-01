@@ -9,8 +9,15 @@ import crypto from "crypto";
 import { getResetPasswordTemplate } from "../utils/emailTemplates.js";
 
 export const registerUser = catchAsyncErrors(async (req, res, next) => {
+    if (!req.body || !req.body.name || !req.body.email || !req.body.password) {
+        return next(new ErrorHandler("Please provide name, email, and password", 400));
+    }
     const { name, email, password } = req.body;
-    const user = await User.create({ name, email, password });
+    let avatarUrl = undefined;
+    if (req.file) {
+        avatarUrl = `/uploads/avatars/${req.file.filename}`;
+    }
+    const user = await User.create({ name, email, password, avatar: avatarUrl });
     sendToken(user, 201, res);
 });
 

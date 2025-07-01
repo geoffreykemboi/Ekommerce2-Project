@@ -35,6 +35,42 @@ const products = [
     numOfReviews: 2,
     reviews: [],
   },
+  {
+    name: "Logitech G502 HERO High Performance Wired Gaming Mouse",
+    price: 49.99,
+    description:
+      "The Logitech G502 HERO is a high-performance gaming mouse designed for gamers who demand precision and customization. It features a HERO 25K sensor for accurate tracking, customizable RGB lighting, and programmable buttons for personalized control.",
+    ratings: 4.7,
+    images: [
+      {
+        public_id: "shopit/demo/g502-hero-mouse",
+        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1698577520/shopit/demo/g502-hero-mouse.jpg",
+      },
+    ],
+    category: "Electronics",
+    seller: "Best Buy",
+    stock: 100,
+    numOfReviews: 150,
+    reviews: [],
+  },
+  {
+    name: "Samsung Galaxy S21 Ultra 5G",
+    price: 1199.99,
+    description:
+      "The Samsung Galaxy S21 Ultra 5G is a flagship smartphone that offers cutting-edge technology, including a stunning 6.8-inch Dynamic AMOLED display, a powerful Exynos 2100 processor, and an advanced camera system with a 108MP main sensor. It supports 5G connectivity for lightning-fast internet speeds.",
+    ratings: 4.8,
+    images: [
+      {
+        public_id: "shopit/demo/s21-ultra-5g",
+        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1698577532/shopit/demo/s21-ultra-5g.jpg",
+      },
+    ],
+    category: "Electronics",
+    seller: "Samsung",
+    stock: 75,
+    numOfReviews: 200,
+    reviews: [],
+  },
   // Add other products here if you have them
 ];
 

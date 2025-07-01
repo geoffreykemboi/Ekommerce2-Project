@@ -4,7 +4,7 @@ import products from './data.js';
 import Product from './models/product.js';
 
 // Load environment variables from config file
-dotenv.config({ path: './config/config.env' });
+dotenv.config();
 
 const seedProducts = async () => {
   try {
