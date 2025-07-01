@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser, setIsAuthenticated } from "../../redux/features/userSlice";
 
+const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
+
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1",
+    baseUrl,
     credentials: "include", // ✅ needed for cookies/sessions
   }),
   tagTypes: ["User", "AdminUser"],
