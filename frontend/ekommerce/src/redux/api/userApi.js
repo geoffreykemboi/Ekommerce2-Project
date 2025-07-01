@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setUser, setIsAuthenticated } from "../../redux/features/userSlice";
+import { toast } from "react-hot-toast";
 
 const baseUrl = process.env.REACT_APP_API_URL || "/api/v1";
 
@@ -20,7 +21,11 @@ export const userApi = createApi({
           dispatch(setUser(data));
           dispatch(setIsAuthenticated(true));
         } catch (error) {
-          console.log(error);
+          toast.error(
+            `Failed to fetch user (/me): ${error?.error || error?.data?.message || error?.status || "Unknown error"}`
+          );
+          // eslint-disable-next-line no-console
+          console.error("/me error:", error);
         }
       },
       providesTags: ["User"],

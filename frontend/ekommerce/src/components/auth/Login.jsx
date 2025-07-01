@@ -10,7 +10,6 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    // ✅ FIX: Removed unused 'data' from the destructuring.
     const [login, { isLoading, error }] = useLoginMutation();
     const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -19,9 +18,15 @@ const Login = () => {
             navigate('/');
         }
         if (error) {
-            toast.error(error?.data?.message);
+            // Show detailed error for debugging
+            let message = error?.data?.message || 'Login failed.';
+            if (error?.status) message += ` (Status: ${error.status})`;
+            toast.error(message);
+            // Also log the full error object for debugging
+            // eslint-disable-next-line no-console
+            console.error('Login error:', error);
         }
-    }, [isAuthenticated, error, navigate]); // ✅ FIX: Added 'navigate' to dependency array
+    }, [isAuthenticated, error, navigate]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -31,7 +36,6 @@ const Login = () => {
 
     return (
         <>
-            {/* ✅ FIX: Used the imported MetaData component */}
             <MetaData title={'Login'} />
             <div className="row wrapper">
                 <div className="col-10 col-lg-5">
