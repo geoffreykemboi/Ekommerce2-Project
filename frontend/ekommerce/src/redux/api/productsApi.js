@@ -5,9 +5,20 @@ import { API_URL } from "../../config/api";
 
 const baseUrl = API_URL;
 
+const baseQueryWithAuth = async (args, api, extraOptions) => {
+  const token = localStorage.getItem("token");
+  let request = typeof args === "string" ? { url: args } : { ...args };
+  request.headers = {
+    ...(request.headers || {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+  const rawBaseQuery = fetchBaseQuery({ baseUrl });
+  return rawBaseQuery(request, api, extraOptions);
+};
+
 export const productApi = createApi({
     reducerPath: "productApi",
-    baseQuery: fetchBaseQuery({ baseUrl }),
+    baseQuery: baseQueryWithAuth,
     tagTypes: ["Product", "AdminProducts"], // Added 'Product' tag for consistency
 
     endpoints: (builder) => ({

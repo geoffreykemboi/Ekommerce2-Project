@@ -22,20 +22,16 @@ class APIFilters {
   filter() {
     const queryCopy = { ...this.queryStr };
 
-    // Remove fields from query that are not direct database fields
+    // Remove fields from query
     const removeFields = ["keyword", "page", "limit"];
     removeFields.forEach((el) => delete queryCopy[el]);
 
-    console.log("Filter query before processing:", queryCopy); // Debug log
-
     // Advanced filter for price, ratings etc
     let queryStr = JSON.stringify(queryCopy);
+
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
 
-    const parsedQuery = JSON.parse(queryStr);
-    console.log("Parsed query for database:", parsedQuery); // Debug log
-
-    this.query = this.query.find(parsedQuery);
+    this.query = this.query.find(JSON.parse(queryStr));
 
     return this;
   }

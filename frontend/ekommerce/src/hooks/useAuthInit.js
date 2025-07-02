@@ -3,13 +3,15 @@
 
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUser, setIsAuthenticated } from '../redux/features/userSlice';
+import { setUser, setIsAuthenticated, setLoading } from '../redux/features/userSlice';
 import { hasValidAuth, getUser, clearAuthData } from '../utils/auth';
 
 export const useAuthInit = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setLoading(true));
+    
     // Check if user has valid authentication data
     if (hasValidAuth()) {
       try {
@@ -33,6 +35,8 @@ export const useAuthInit = () => {
       dispatch(setUser(null));
       dispatch(setIsAuthenticated(false));
     }
+    
+    dispatch(setLoading(false));
   }, [dispatch]);
 };
 
