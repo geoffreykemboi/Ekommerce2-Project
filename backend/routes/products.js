@@ -17,31 +17,23 @@ import { authorizeRoles, isAuthenticatedUser } from '../middlewares/auth.js';
 
 const router = express.Router();
 
-// Handles the HOMEPAGE (GET /api/v1/products)
-router.route("/products").get(getProducts);
-
-// Handles the PRODUCT DETAILS page (GET /api/v1/products/:id)
-router.route("/products/:id").get(getProductDetails);
-
-// It creates the path: POST /api/v1/admin/products
+// Handles the HOMEPAGE (GET /api/v1/products) and creating new products (POST /api/v1/products)
 router
 .route("/products")
+.get(getProducts)
 .post(isAuthenticatedUser, authorizeRoles("admin"), newProduct);
+
+// Handles the PRODUCT DETAILS page (GET /api/v1/products/:id) and updating/deleting products
+router
+.route("/products/:id")
+.get(getProductDetails)
+.put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct)
+.delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
 
 // Handles GETting all products for the admin dashboard
 router
 .route("/admin/products")
 .get(isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts);
-
-// Handles UPDATING a product
-router
-.route("/products/:id")
-.put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct);
-
-// Handles DELETING a product
-router
-.route("/products/:id")
-.delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
 
 router
 .route("/admin/products/:id/upload_images")
@@ -51,9 +43,7 @@ router
 .route("/admin/products/:id/delete_image")
 .put(isAuthenticatedUser, authorizeRoles("admin"), deleteProductImage);
 
-
 // --- REVIEW ROUTES ---
-router.route("/admin/products").get(isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts);
 router.route("/reviews").put(isAuthenticatedUser, createProductReview);
 router.route("/admin/reviews").delete(isAuthenticatedUser, authorizeRoles("admin"), deleteReview);
    

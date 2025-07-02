@@ -88,7 +88,8 @@ export const uploadProductImages = catchAsyncErrors(async (req, res, next) => {
   const uploader = async (image) => upload_file(image, "shopit/products");
   const urls = await Promise.all(req.body.images.map(uploader));
 
-  product.images.push(...urls);
+  // Prepend new images to the beginning so they become the main images
+  product.images.unshift(...urls);
   await product.save();
 
   res.status(200).json({

@@ -19,7 +19,7 @@ const baseQueryWithAuth = async (args, api, extraOptions) => {
 export const productApi = createApi({
     reducerPath: "productApi",
     baseQuery: baseQueryWithAuth,
-    tagTypes: ["Product", "AdminProducts"], // Added 'Product' tag for consistency
+    tagTypes: ["Product", "AdminProducts"],
 
     endpoints: (builder) => ({
         getProducts: builder.query({
@@ -47,13 +47,12 @@ export const productApi = createApi({
         }),
         createProduct: builder.mutation({
             query: (body) => ({
-                // 👇 THE FIX IS HERE 👇
                 url: "/products", // Use the correct RESTful URL
                 method: "POST",
                 body,
-                            }),
-            invalidatesTags: ["AdminProducts"],
             }),
+            invalidatesTags: ["AdminProducts"],
+        }),
         updateProduct: builder.mutation({
             query: ({ id, body }) => ({
                 // 👇 THIS LINE IS NOW CORRECT 👇

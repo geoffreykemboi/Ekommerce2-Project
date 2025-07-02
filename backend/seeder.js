@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import products from './data.js';
 import Product from './models/product.js';
+import User from './models/user.js';
 
 // Load environment variables from config file
 dotenv.config();
@@ -16,8 +17,28 @@ const seedProducts = async () => {
     await Product.deleteMany();
     console.log("Existing products have been cleared.");
 
-    // 3. Insert the new array of products
-    await Product.insertMany(products);
+    // 3. Find an admin user to assign as the creator of all products
+    let adminUser = await User.findOne({ role: 'admin' });
+    
+    if (!adminUser) {
+      // Create a default admin user if none exists
+      adminUser = await User.create({
+        name: 'Admin User',
+        email: 'admin@example.com',
+        password: 'password123',
+        role: 'admin'
+      });
+      console.log("Created default admin user for products.");
+    }
+
+    // 4. Add user field to all products
+    const productsWithUser = products.map(product => ({
+      ...product,
+      user: adminUser._id
+    }));
+
+    // 5. Insert the new array of products
+    await Product.insertMany(productsWithUser);
     console.log("All products have been seeded successfully!");
 
   } catch (error) {
@@ -25,7 +46,7 @@ const seedProducts = async () => {
     console.error("ERROR during seeding process:", error.message);
     process.exit(1); // Exit with a failure code
   } finally {
-    // 4. This block will always run, ensuring the database connection is closed.
+    // 6. This block will always run, ensuring the database connection is closed.
     await mongoose.disconnect();
     console.log("Database disconnected.");
   }

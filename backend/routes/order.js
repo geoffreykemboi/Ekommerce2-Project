@@ -1,9 +1,13 @@
 import express from 'express';
 const router = express.Router();
 
-// Before
 import { newOrder, getOrderDetails, myOrders ,getSales, allOrders, updateOrder, deleteOrder } from '../controllers/orderControllers.js'; // Import order controllers
 import { isAuthenticatedUser, authorizeRoles } from '../middlewares/auth.js'; // Import authentication and authorization middlewares
+router.use('/admin', (req, res, next) => {
+  console.log(`[ADMIN ROUTE] ${req.method} ${req.originalUrl}`);
+  console.log(`[ADMIN ROUTE] Headers:`, req.headers.authorization ? 'Bearer token present' : 'No auth header');
+  next();
+});
 
 router.route('/order/new').post(isAuthenticatedUser, newOrder); // Fixed route path
 router.route('/orders/:id').get(isAuthenticatedUser, getOrderDetails); // Added route for getting order details

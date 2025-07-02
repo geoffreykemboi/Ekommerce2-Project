@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setCartItem, removeCartItem } from "../../redux/features/cartSlice";
 import { formatPrice } from "../../helpers/helpers";
+import { toast } from "react-hot-toast";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -38,8 +39,20 @@ const Cart = () => {
     setItemToCart(item, newQty);
   };
 
-  const removeCartItemHandler = (id) => {
-    dispatch(removeCartItem(id));
+  const removeCartItemHandler = (id, itemName) => {
+    if (window.confirm(`Are you sure you want to remove "${itemName}" from your cart?`)) {
+      dispatch(removeCartItem(id));
+      toast.success("Item removed from cart successfully!");
+    }
+  };
+
+  const clearCartHandler = () => {
+    if (window.confirm("Are you sure you want to clear your entire cart?")) {
+      cartItems.forEach(item => {
+        dispatch(removeCartItem(item.product));
+      });
+      toast.success("Cart cleared successfully!");
+    }
   };
 
   const checkoutHandler = () => {
@@ -54,9 +67,21 @@ const Cart = () => {
         <h2 className="mt-5">Your Cart is Empty</h2>
       ) : (
         <>
-          <h2 className="mt-5">
-            Your Cart: <b>{cartItems?.length} items</b>
-          </h2>
+          <div className="d-flex justify-content-between align-items-center mt-5 mb-3">
+            <h2>
+              Your Cart: <b>{cartItems?.length} items</b>
+            </h2>
+            {cartItems?.length > 0 && (
+              <button
+                className="btn btn-outline-danger btn-sm"
+                onClick={clearCartHandler}
+                title="Clear entire cart"
+              >
+                <i className="fa fa-trash-o me-1"></i>
+                Clear Cart
+              </button>
+            )}
+          </div>
 
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8">
@@ -104,11 +129,15 @@ const Cart = () => {
                         </div>
                       </div>
                       <div className="col-4 col-lg-1 mt-4 mt-lg-0">
-                        <i
-                          id="delete_cart_item"
-                          className="fa fa-trash btn btn-danger"
-                          onClick={() => removeCartItemHandler(item.product)}
-                        ></i>
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger btn-sm delete-cart-item"
+                          onClick={() => removeCartItemHandler(item.product, item.name)}
+                          title="Remove item from cart"
+                          aria-label="Remove item from cart"
+                        >
+                          <i className="fa fa-trash"></i>
+                        </button>
                       </div>
                     </div>
                   </div>

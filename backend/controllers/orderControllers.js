@@ -77,48 +77,83 @@ export const allOrders = catchAsyncErrors(async (req, res, next) => {
 
 // Update order status - ADMIN => /api/v1/admin/orders/:id
 export const updateOrder = catchAsyncErrors(async (req, res, next) => {
+    console.log("🚀 UPDATE ORDER CONTROLLER HIT!");
+    console.log("Update order requested for ID:", req.params.id);
+    console.log("Request body:", req.body);
+    console.log("User:", req.user?.email, "Role:", req.user?.role);
+    
+    // Validate ObjectId format
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+        return next(new ErrorHandler("Invalid order ID format", 400));
+    }
+    
     const order = await Order.findById(req.params.id);
 
     if (!order) {
+        console.log("Order not found with ID:", req.params.id);
         return next(new ErrorHandler("Order not found with this ID", 404));
     }
+
+    console.log("Order found:", order._id, "Current status:", order.orderStatus);
 
     if (order?.orderStatus === "Delivered") {
         return next(new ErrorHandler("You have already delivered this order", 400));
     }
 
-    let productNotFound = false;
-    for (const item of order.orderItems) {
-        const product = await Product.findById(item.product.toString());
-        if (!product) {
-            productNotFound = true;
-            break;
-        }
-        if (product.stock < item.quantity) {
-            return next(new ErrorHandler(`Insufficient stock for product ID: ${item.product}`, 400));
-        }
-    }   
-
-    // Correctly update product stock
-    for (const item of order.orderItems) {
-        const product = await Product.findById(item.product.toString());
-        if (!product) {
-            return next(new ErrorHandler(`No Product found with ID: ${item.product}`, 404));
-        }
-        product.stock -= item.quantity;
-        await product.save({ validateBeforeSave: false });
+    // Validate status
+    const validStatuses = ["Processing", "Shipped", "Delivered"];
+    if (!validStatuses.includes(req.body.status)) {
+        return next(new ErrorHandler("Invalid order status", 400));
     }
 
-    order.orderStatus = req.body.status;
-    
-    if (req.body.status === "Delivered") {
+    // Only update product stock if the order is being marked as delivered
+    // and it hasn't been delivered before
+    if (req.body.status === "Delivered" && order.orderStatus !== "Delivered") {
+        // Check if all products exist before updating stock
+        const missingProducts = [];
+        const stockIssues = [];
+        
+        for (const item of order.orderItems) {
+            const product = await Product.findById(item.product.toString());
+            if (!product) {
+                missingProducts.push(item.product);
+                continue;
+            }
+            if (product.stock < item.quantity) {
+                stockIssues.push(`Product "${product.name}" has insufficient stock (${product.stock} available, ${item.quantity} needed)`);
+            }
+        }
+        
+        // If there are missing products, log warning but continue with order update
+        if (missingProducts.length > 0) {
+            console.warn(`Warning: Some products from order ${order._id} no longer exist:`, missingProducts);
+            // Don't fail the order update, just log the warning
+        }
+        
+        // If there are stock issues, return error
+        if (stockIssues.length > 0) {
+            return next(new ErrorHandler(`Stock issues: ${stockIssues.join(', ')}`, 400));
+        }
+        
+        // Update stock only for existing products
+        for (const item of order.orderItems) {
+            const product = await Product.findById(item.product.toString());
+            if (product) {  // Only update if product exists
+                product.stock -= item.quantity;
+                await product.save({ validateBeforeSave: false });
+            }
+        }
+        
         order.deliveredAt = Date.now();
     }
 
+    order.orderStatus = req.body.status;
     await order.save();
 
     res.status(200).json({
         success: true,
+        message: "Order status updated successfully",
+        order
     });
 });
 
@@ -135,6 +170,7 @@ export const deleteOrder = catchAsyncErrors(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
+        message: "Order deleted successfully",
     });
 });
 

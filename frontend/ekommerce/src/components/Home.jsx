@@ -17,7 +17,7 @@ const Home = () => {
   const min = searchParams.get("min");
   const max = searchParams.get("max");
   const category = searchParams.get("category");
-  const ratings =searchParams.get("ratings");
+  const ratings = searchParams.get("ratings");
 
   // Construct API query params
   const params = { page, keyword };
@@ -25,7 +25,6 @@ const Home = () => {
   if (max) params.max = max;
   if (category) params.category = category;
   if (ratings) params.ratings = ratings;
-
 
   const { data, isLoading, error } = useGetProductsQuery(params);
 
@@ -44,7 +43,7 @@ const Home = () => {
       <div className="container mt-4">
         <h1 className="text-secondary mb-4">
           {keyword
-            ? `${data?.products?.length} Products found with keyword: ${keyword}`
+            ? `${data?.products?.length || 0} Products found with keyword: ${keyword}`
             : "Latest Products"}
         </h1>
 

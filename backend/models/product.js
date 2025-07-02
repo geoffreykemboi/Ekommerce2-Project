@@ -13,6 +13,34 @@ const productSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  category: {
+    type: String,
+    required: [true, "Please enter product category"],
+    enum: {
+      values: [
+        "Electronics",
+        "Cameras", 
+        "Laptops",
+        "Accessories",
+        "Headphones",
+        "Food",
+        "Books", 
+        "Sports",
+        "Outdoor",
+        "Home"
+      ],
+      message: "Please select correct category"
+    }
+  },
+  seller: {
+    type: String,
+    required: [true, "Please enter product seller"]
+  },
+  stock: {
+    type: Number,
+    required: [true, "Please enter product stock"],
+    default: 0
+  },
   images: [
     {
       url: { type: String },
@@ -34,6 +62,15 @@ const productSchema = new mongoose.Schema({
       comment: String,
     },
   ],
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 const Product = mongoose.model("Product", productSchema);

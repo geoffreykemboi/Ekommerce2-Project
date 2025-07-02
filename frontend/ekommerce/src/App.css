@@ -224,6 +224,35 @@ footer {
   border: none;
 }
 
+/* Enhanced delete button styling */
+.delete-cart-item {
+  border: 1px solid #dc3545 !important;
+  color: #dc3545 !important;
+  background-color: white !important;
+  padding: 0.375rem 0.5rem !important;
+  font-size: 0.9rem !important;
+  border-radius: 0.25rem !important;
+  transition: all 0.2s ease-in-out !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.delete-cart-item:hover {
+  background-color: #dc3545 !important;
+  color: white !important;
+  border-color: #dc3545 !important;
+  transform: scale(1.05) !important;
+}
+
+.delete-cart-item:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.delete-cart-item i {
+  font-size: 1rem !important;
+}
+
 #card_item_price {
   color: #febd69;
   font-weight: bold;

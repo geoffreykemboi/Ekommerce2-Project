@@ -1,7 +1,13 @@
 #!/usr/bin/env node
 
-// Set production environment
-process.env.NODE_ENV = 'PRODUCTION';
+// Load environment variables FIRST
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Set production environment (only if not already set)
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'PRODUCTION';
+}
 
 // Import and run the app
 import('./app.js')

@@ -130,14 +130,17 @@ const Filters = () => {
             onClick={(e) => handleClick(e.target)}
           />
           <label className="form-check-label" htmlFor={`check${rating}`}>
-            <StarRatings
-              rating={rating}
-              starRatedColor="#ffb829"
-              numberOfStars={5}
-              name="rating"
-              starDimension="21px"
-              starSpacing="1px"
-            />
+            <div className="d-flex align-items-center">
+              <StarRatings
+                rating={rating}
+                starRatedColor="#ffb829"
+                numberOfStars={5}
+                name="rating"
+                starDimension="18px"
+                starSpacing="1px"
+              />
+              <span className="ms-2 text-muted small">& up</span>
+            </div>
           </label>
       </div>
       ))}
